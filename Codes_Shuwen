@@ -1,0 +1,26 @@
+#import packages & data
+import pandas as pd
+
+df = pd.read_csv("C:\\Users\\18005\\OneDrive\\Documents\\GitHub\\Project3-Traffic-Jam\\project\\train_revised.csv")
+
+#Drop irrelevant columns
+df = df.drop(columns=["seat_number", "ride_id", "payment_receipt", "travel_date", "max_capacity","payment_method"])
+
+#Filtering 
+df = df[(df.travel_to == 'Nairobi') & (df.car_type == 'Bus')]
+df = df.drop(columns = ["travel_to","car_type"])
+df = df.drop_duplicates()
+#Groupby places
+place = df.groupby("travel_from").nunique()
+
+#Sort by time
+place.sort_values(by = "travel_time", ascending = False)
+
+#Group by time
+df.groupby("travel_time").describe()
+
+#Sort by place
+df.sort_values(by = "travel_from", ascending = False)
+
+pd.crosstab(df.travel_time, df.travel_from)
+
